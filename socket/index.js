@@ -33,6 +33,16 @@ io.on('connection', (socket) => {
 		});
 	});
 
+	socket.on('sendNotification', ({ senderId, receiverId, senderName, text }) => {
+		const receiver = getUser(receiverId);
+
+		io.to(receiver.socketId).emit('getNotification', {
+			senderId,
+			senderName,
+			text
+		});
+	});
+
 	socket.on('disconnect', () => {
 		console.log('a user disconnected');
 		removeUser(socket.id);
